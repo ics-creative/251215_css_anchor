@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>3. 応用 - リストの「今見ている要素」を指し示す</title>
+  <link href="../base.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --spring-easing: cubic-bezier(0.17, 0.89, 0.32, 1.28);
+    }
+
+    .wrapper {
+      font-family: "DotGothic16", sans-serif;
+    }
+
+    .book-list {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .book {
+      position: relative;
+      display: grid;
+      justify-content: center;
+      align-items: start;
+      grid-template-rows: 1fr auto;
+      gap: 6px;
+      width: 90px;
+      height: 420px;
+      padding: 2rem 0.3rem;
+      border: 3px solid #222222;
+      border-radius: 2px;
+      background: #fffefc;
+      box-shadow: 2px 2px 0 #111111;
+      transition: translate 0.18s ease-out, border-color 0.2s ease-out;
+    }
+
+    .book:nth-of-type(1) {
+      background-color: #7a729f;
+    }
+
+    .book:nth-of-type(2) {
+      background-color: #a19450;
+    }
+
+    .book:nth-of-type(3) {
+      background-color: #b27171;
+    }
+
+    .book:nth-of-type(4) {
+      background-color: #516e85;
+    }
+
+    .book:nth-of-type(5) {
+      background-color: #855175;
+    }
+
+    /* 背表紙のラベル（縦書き） */
+    .book-label {
+      font-size: 1.1rem;
+      color: #ffffff;
+      letter-spacing: 0.25em;
+      writing-mode: vertical-rl;
+    }
+
+    /* クリックしやすいようにヒットエリア拡張 */
+    .book::before {
+      content: "";
+      position: absolute;
+      inset: -0.5rem;
+    }
+
+    .book:hover {
+      translate: 0 -4px;
+    }
+
+    /* 選択中の本（見た目） */
+    .book.is-selected {
+      border: 5px solid #f3f3f3;
+    }
+
+    /* ▼ 指さしポインター（選択中／ホバー中の本の真下にくる） */
+    .pointer {
+      position: absolute;
+      top: calc(anchor(bottom) - 2rem);
+      left: anchor(center);
+
+      pointer-events: none;
+      transition: left 0.45s var(--spring-easing), top 0.45s var(--spring-easing);
+      rotate: -20deg;
+
+      position-anchor: --selected-book; /* 🌟どのアンカーを見るか指定 */
+
+    }
+
+    .pointer::before {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 80px;
+      background-image: url("./images/icon.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 4px 4px rgba(120, 80, 130, 0.35));
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="book-list">
+    <button class="book is-selected">
+      <span class="book-label">かんたん片付けBOOK</span>
+      <span class="book-label">山田山男</span>
+    </button>
+    <button class="book">
+      <span class="book-label">おもしろい折り紙</span>
+      <span class="book-label">折紙折太郎</span>
+    </button>
+    <button class="book">
+      <span class="book-label">魚についての本</span>
+      <span class="book-label">さかなたろう</span>
+    </button>
+    <button class="book">
+      <span class="book-label">三重県の歴史</span>
+      <span class="book-label">四日市花子</span>
+    </button>
+    <button class="book">
+      <span class="book-label">エンジニアになろう</span>
+      <span class="book-label">ICS</span>
+    </button>
+  </div>
+
+  <!-- 指さしポインター（アンカーだけ見て動く） -->
+  <span aria-hidden="true" class="pointer"></span>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll(".book");
+  let selectedBook = document.querySelector(".book.is-selected");
+  // 今ポインターが指している本
+  let currentAnchorTarget = selectedBook;
+
+  // 🌟ポインターの参照先（アンカー）だけを切り替える関数
+  const updateAnchor = (target) => {
+    if (currentAnchorTarget) {
+      currentAnchorTarget.style.anchorName = "";
+    }
+    currentAnchorTarget = target;
+    if (currentAnchorTarget) {
+      currentAnchorTarget.style.anchorName = "--selected-book";
+    }
+  };
+
+  // 初期状態：選択中の本を指す
+  if (selectedBook) {
+    updateAnchor(selectedBook);
+  }
+
+  buttons.forEach((button) => {
+    // クリック → 「選択中の本」を更新
+    button.addEventListener("click", () => {
+      if (selectedBook) {
+        selectedBook.classList.remove("is-selected");
+      }
+      selectedBook = button;
+      selectedBook.classList.add("is-selected");
+      updateAnchor(selectedBook);
+    });
+
+    // ホバー・フォーカス開始 → 一時的にこの本を指す
+    const handleInteractionStart = () => {
+      if (button !== currentAnchorTarget) {
+        updateAnchor(button);
+      }
+    };
+
+    // ホバー・フォーカス終了 → また「選択中の本」を指す
+    const handleInteractionEnd = () => {
+      if (selectedBook) {
+        updateAnchor(selectedBook);
+      }
+    };
+
+    button.addEventListener("mouseenter", handleInteractionStart);
+    button.addEventListener("focus", handleInteractionStart);
+    button.addEventListener("mouseleave", handleInteractionEnd);
+    button.addEventListener("blur", handleInteractionEnd);
+  });
+</script>
+
+</body>
+</html>

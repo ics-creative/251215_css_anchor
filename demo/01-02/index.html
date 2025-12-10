@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>2. 相対的なサイズ指定 - anchor-size()関数</title>
+  <link href="../base.css" rel="stylesheet">
+  <style>
+    .wrapper {
+      height: 260px;
+    }
+
+    /* 拡大・縮小するアイコン（アンカー） */
+    .heart-icon {
+      width: 45px;
+      height: 45px;
+
+      animation: pulse-heart 7s ease-in-out infinite; /* アニメーション */
+
+      anchor-name: --tooltip-anchor; /* 🌟アンカー名を付ける */
+    }
+
+    .heart-image {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* フキダシ */
+    .tooltip {
+      position: absolute;
+      top: calc(anchor(bottom) - 10px);
+      left: anchor(center);
+
+      display: grid;
+      place-items: center;
+
+      min-width: calc(200px + 2rem + 4px); /* 最小幅：テキストの幅 + 左右のpadding + 左右のborder */
+      width: calc(anchor-size(width) * 4);
+      height: calc(anchor-size(width) * 2.5);
+
+      position-anchor: --tooltip-anchor; /* 🌟どのアンカーを見るか指定 */
+    }
+
+    .tooltip-text {
+      width: 200px;
+    }
+
+    /* アイコンが大きくなったり小さくなったりするアニメーション */
+    @keyframes pulse-heart {
+      0%,
+      100% {
+        width: 45px;
+        height: 45px;
+        translate: 0 calc(45px / 2 * -1);
+      }
+      50% {
+        width: 75px;
+        height: 75px;
+        translate: 0 calc(75px / 2 * -1);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="heart-icon">
+    <img
+      alt="ハートのアイコン"
+      class="heart-image"
+      src="images/icon.svg"
+    >
+  </div>
+  <div class="tooltip">
+    <p class="tooltip-text">フキダシの大きさは、ハートの大きさに合わせて変わるよ。</p>
+  </div>
+</div>
+</body>
+</html>

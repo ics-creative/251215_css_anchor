@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>2. 動き回るハートにくっつくフキダシ</title>
+  <link href="../base.css" rel="stylesheet">
+  <style>
+    /* ハートが動き回るフィールド */
+    .playground {
+      position: relative;
+      width: min(500px, 100%);
+      height: 260px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* 動き回るハート（アンカー） */
+    .heart-icon {
+      position: relative;
+      transition: filter 0.2s ease;
+      /* アニメーションで移動 */
+      animation:
+        move-heart 10s ease-in-out infinite alternate;
+
+    }
+
+    .heart-image {
+      width: 48px;
+      height: 48px;
+    }
+
+    /* 吹き出し本体：anchor() でハートの真下にくっつく */
+    .tooltip {    position: relative;
+      height: max-content;
+
+      animation:
+        move-heart 10s ease-in-out infinite alternate;
+    }
+
+    .tooltip-text {
+      width: 180px;
+    }
+
+
+    /* ハートがフィールド内をふよふよ移動する */
+    @keyframes move-heart {
+      0% {
+        top: 28px;
+        left: 40px;
+      }
+      35% {
+        top: 24px;
+        left: calc(100% - 88px);
+      }
+      65% {
+        top: calc(100% - 110px);
+        left: calc(100% - 96px);
+      }
+      100% {
+        top: calc(100% - 96px);
+        left: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="playground">
+  <div class="heart-icon" type="button">
+    <img
+      alt="ハートのアイコン"
+      class="heart-image"
+      src="images/icon.svg"
+    >
+  </div>
+  <div class="tooltip">
+    <p class="tooltip-text">ハートがどこへ行っても下にピタッとついてくるよ。</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>1. 相対的な位置指定 - anchor()関数</title>
+  <link href="../base.css" rel="stylesheet">
+  <style>
+    /* アイコンが動き回るフィールド */
+    .wrapper {
+      position: relative;
+      width: min(500px, 100%);
+      height: 260px;
+    }
+
+    /* 動き回るアイコン（アンカー） */
+    .heart-icon {
+      position: absolute;
+      animation: move-heart 10s ease-in-out infinite alternate; /* アニメーション */
+
+      /* アンカー名 */
+      anchor-name: --tooltip-anchor; /* 🌟アンカー名を付ける */
+    }
+
+    .heart-image {
+      width: 48px;
+      height: 48px;
+    }
+
+    /* フキダシ */
+    .tooltip {
+      position: absolute;
+      top: calc(anchor(bottom) + 10px);
+      left: anchor(center);
+
+      position-anchor: --tooltip-anchor; /* 🌟どのアンカーを見るか指定 */
+    }
+
+    .tooltip-text {
+      width: 180px;
+    }
+
+    /* アイコンがフィールド内を移動するアニメーション */
+    @keyframes move-heart {
+      0% {
+        top: 28px;
+        left: 40px;
+      }
+      35% {
+        top: 24px;
+        left: calc(100% - 88px);
+      }
+      65% {
+        top: calc(100% - 110px);
+        left: calc(100% - 96px);
+      }
+      100% {
+        top: calc(100% - 96px);
+        left: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="heart-icon">
+    <img
+      alt="ハートのアイコン"
+      class="heart-image"
+      src="./images/icon.svg"
+    >
+  </div>
+  <div class="tooltip">
+    <p class="tooltip-text">ハートがどこへ行っても下にピタッとついてくるよ。</p>
+  </div>
+</div>
+</body>
+</html>
