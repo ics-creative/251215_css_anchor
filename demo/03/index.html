@@ -17,7 +17,7 @@
 
     .book-list {
       display: flex;
-      gap: 1rem;
+      gap: 12px;
     }
 
     .book {
@@ -27,10 +27,8 @@
       align-items: start;
       grid-template-rows: 1fr auto;
       gap: 6px;
-      min-width: 50px;
-      width: 6vw;
-      min-height: 220px;
-      height: 30vw;
+      width: 80px;
+      height: 380px;
       padding: 2rem 0.3rem;
       border: 3px solid #222222;
       border-radius: 2px;
@@ -61,7 +59,7 @@
 
     /* 背表紙のラベル（縦書き） */
     .book-label {
-      font-size: max(0.5rem, 1.2vw);
+      font-size: 1rem;
       color: #ffffff;
       letter-spacing: 0.25em;
       writing-mode: vertical-rl;
@@ -71,7 +69,7 @@
     .book::before {
       content: "";
       position: absolute;
-      inset: -0.75rem;
+      inset: -10px;
     }
 
     .book:hover {
@@ -99,8 +97,8 @@
     .pointer::before {
       content: "";
       display: block;
-      width: 5vw;
-      height: 5vw;
+      width: 70px;
+      height: 70px;
       background-image: url("./images/icon.png");
       background-repeat: no-repeat;
       background-position: center;
