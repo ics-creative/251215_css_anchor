@@ -146,13 +146,9 @@
 
   // 🌟ポインターの参照先（アンカー）だけを切り替える関数
   const updateAnchor = (target) => {
-    if (currentAnchorTarget) {
-      currentAnchorTarget.style.anchorName = "";
-    }
+    currentAnchorTarget.style.anchorName = "";
     currentAnchorTarget = target;
-    if (currentAnchorTarget) {
-      currentAnchorTarget.style.anchorName = "--selected-book";
-    }
+    currentAnchorTarget.style.anchorName = "--selected-book";
   };
 
   // 初期状態：選択中の本を指す
